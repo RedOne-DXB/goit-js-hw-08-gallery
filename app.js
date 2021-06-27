@@ -65,26 +65,32 @@ const galleryItems = [
 ];
 
 const refs = {
-imgList = document.querySelector('.js-gallery'),
-openModal = document.querySelector('.js-lightbox'),
-modalImg = document.querySelector(".lightbox__image"),
-closeBtn = document.querySelector('[data-action="close-lightbox"]'),
+imgList: document.querySelector('.js-gallery'),
+openModal: document.querySelector('.js-lightbox'),
+modalImg: document.querySelector(".lightbox__image"),
+closeBtn: document.querySelector('[data-action="close-lightbox"]'),
 }
 
- console.log('open_modal', openModal);
 const addItems = galleryItems => {
     return `<li class='gallery__item'><a href='#' class='gallery__link'><img src='${galleryItems.preview}' data-source='${galleryItems.original}' alt='${galleryItems.description}' class='gallery__image'/></a></li>`
 }
 
 const itemsCompilation = galleryItems.map(addItems).join('');
 
-imgList.insertAdjacentHTML('afterbegin', itemsCompilation);
-document.body.appendChild(imgList);
+refs.imgList.insertAdjacentHTML('afterbegin', itemsCompilation);
+document.body.appendChild(refs.imgList);
 
-refs.openModal.addEventListener('click', () => {
-  refs.openModal.classList.add('is-open');
-  console.log('open_modal', refs.openModal);
-})
+refs.imgList.addEventListener('click', onOpenModal)
+
+function onOpenModal(event) {
+  console.log(event.target);
+  refs.openModal.classList.toggle('is-open');
+  refs.modalImg.src = event.target.dataset.source
+  refs.modalImg.alt = event.target.alt
+  console.log(refs.modalImg)
+  console.log(refs.openModal)
+}
+
 
 // closeBtn.addEventListener('click', () => {
 //   document.body.classList.remove('is-open');
