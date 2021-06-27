@@ -67,6 +67,7 @@ const galleryItems = [
 const refs = {
 imgList: document.querySelector('.js-gallery'),
 openModal: document.querySelector('.js-lightbox'),
+backdrop: document.querySelector('.lightbox__overlay'),
 modalImg: document.querySelector(".lightbox__image"),
 closeBtn: document.querySelector('[data-action="close-lightbox"]'),
 }
@@ -78,39 +79,37 @@ const addItems = galleryItems => {
 const itemsCompilation = galleryItems.map(addItems).join('');
 
 refs.imgList.insertAdjacentHTML('afterbegin', itemsCompilation);
-document.body.appendChild(refs.imgList);
 
 refs.imgList.addEventListener('click', onOpenModal)
+refs.closeBtn.addEventListener('click', onCloseModal)
+refs.backdrop.addEventListener('click', onBackdropClick)
 
 function onOpenModal(event) {
-  console.log(event.target);
-  refs.openModal.classList.toggle('is-open');
+  refs.openModal.classList.add('is-open');
   refs.modalImg.src = event.target.dataset.source
   refs.modalImg.alt = event.target.alt
-  console.log(refs.modalImg)
-  console.log(refs.openModal)
+  // console.log(event.target);
+  // console.log(refs.modalImg)
+  // console.log(refs.openModal)
+  window.addEventListener('keydown', onEscKeyPress);
 }
 
+function onCloseModal(event) {
+  refs.openModal.classList.remove('is-open');
+   window.removeEventListener('keydown', onEscKeyPress);
+}
 
-// closeBtn.addEventListener('click', () => {
-//   document.body.classList.remove('is-open');
-// })
+function onBackdropClick(event) {
+  if (event.target === event.currentTarget) {
+    onCloseModal();
+    // console.log('Клик по беку')
+  }
+}
 
+function onEscKeyPress(event) {
+  if (event.code === 'Escape') {
+    onCloseModal();
+    // console.log(event.code);
+  }
+}
 
-// imgListRoot.addEventListener("click", onImgClick);
-// closeBtn.addEventListener("click", onCloseModal)
-
-
-
-// function onImgClick(event) { 
-//   const targetImg = event.target;
-//   console.log("event target: ", targetImg)
-//   openModal.classList.toggle("is-open")
-//   modalImg.src = targetImg.dataset.source
-// };
-
-// function onCloseModal(event) {
-//   const targetCloseBtn = event.target;
-//   openModal.classList.toggle("is-open")
-//     modalImg.src = ""
-// }
