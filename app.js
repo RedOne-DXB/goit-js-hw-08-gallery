@@ -82,14 +82,17 @@ refs.imgList.insertAdjacentHTML('afterbegin', itemsCompilation);
 
 refs.imgList.addEventListener('click', onOpenModal)
 refs.closeBtn.addEventListener('click', onCloseModal)
-refs.backdrop.addEventListener('click', onBackdropClick)
+refs.backdrop.addEventListener('click', onCloseModal)
 
 function onOpenModal(event) {
+  if (event.target === refs.imgList) {
+    return undefined;
+  }
   refs.openModal.classList.add('is-open');
   refs.modalImg.src = event.target.dataset.source
   refs.modalImg.alt = event.target.alt
-  // console.log(event.target);
-  // console.log(refs.modalImg)
+  console.log(event.target);
+  // console.log(refs.modalImg) 
   // console.log(refs.openModal)
   window.addEventListener('keydown', onEscKeyPress);
 }
@@ -97,13 +100,6 @@ function onOpenModal(event) {
 function onCloseModal(event) {
   refs.openModal.classList.remove('is-open');
    window.removeEventListener('keydown', onEscKeyPress);
-}
-
-function onBackdropClick(event) {
-  if (event.target === event.currentTarget) {
-    onCloseModal();
-    // console.log('Клик по беку')
-  }
 }
 
 function onEscKeyPress(event) {
